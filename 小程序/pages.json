@@ -1,0 +1,103 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "垃圾分类智能巡检管理系统",
+				"navigationStyle":"default"
+			}
+		},
+        {
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "垃圾分类智能巡检管理系统",
+				"navigationStyle":"custom"
+			}
+		},
+        {
+        	"path": "pages/task/dot",
+        	"style": {
+        		"navigationBarTitleText": "垃圾分类智能巡检管理系统",
+        		"navigationStyle":"custom",
+                "app-plus":{
+                	"titleNView": false
+                }
+        	}
+        },
+		{
+			"path": "pages/task/new-detail",
+			"style": {
+				"navigationBarTitleText": "检查历史",
+				"navigationStyle":"default",
+		        "enablePullDownRefresh": true,
+				"navigationBarBackgroundColor":"#fff"
+			}
+		},
+        {
+        	"path": "pages/task/report",
+        	"style": {
+        		"navigationBarTitleText": "填写检查信息",
+        		"navigationStyle":"default",
+				"navigationBarBackgroundColor":"#fff"
+        	}
+        },
+		{
+			"path": "pages/task/reportProblem",
+			"style": {
+				"navigationBarTitleText": "问题上报",
+				"navigationStyle":"default",
+				"navigationBarBackgroundColor":"#fff"
+			}
+		},
+		{
+			"path": "pages/task/reportDetail",
+			"style": {
+				"navigationBarTitleText": "点位详情",
+				"navigationStyle":"default",
+				"navigationBarBackgroundColor":"#fff"
+			}
+		},
+        {
+        	"path": "pages/task/user",
+        	"style": {
+        		"navigationBarTitleText": "个人中心",
+        		"navigationStyle":"default",
+				"navigationBarBackgroundColor":"#0091FF",
+				"navigationBarTextStyle": "#fff"
+        	}
+        },
+		{
+			"path": "pages/task/userMessage",
+			"style": {
+				"navigationBarTitleText": "消息通知",
+				"navigationStyle":"default",
+				"enablePullDownRefresh": true,
+				"navigationBarBackgroundColor":"#fff"
+			}
+		},
+        {
+        	"path": "pages/task/history",
+        	"style": {
+        		"navigationBarTitleText": "检查信息",
+        		"navigationStyle":"default"
+        	}
+        },
+		{
+			"path": "pages/task/dotReport",
+			"style": {
+				"navigationBarTitleText": "点位处理",
+				"navigationStyle":"default"
+			}
+		},
+	    {
+            "path" : "components/uni-noData/noData/noData",
+            "style" : {}
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	}
+}

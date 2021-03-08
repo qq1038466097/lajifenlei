@@ -1,0 +1,159 @@
+import React from 'react'
+import { routerRedux } from 'dva/router'
+import { Menu, Icon } from 'antd'
+import { Link } from 'react-router-dom'
+import { arrayToTree, queryArray } from 'utils'
+import pathToRegexp from 'path-to-regexp'
+import { userDatas,srceenUrl } from '../../utils/config'
+
+const Menus = ({ siderFold, darkTheme, navOpenKeys, changeOpenKeys, menu, location,dispatch }) => {
+  // 生成树状
+  const menuTree = arrayToTree(menu.filter(_ => _.mpid !== '-1'), 'id', 'mpid')
+  const levelMap = {}
+  // 递归生成菜单
+  const getMenus = (menuTreeN, siderFoldN) => {
+    return menuTreeN.map((item) => {
+      if (item.children) {
+        if (item.mpid) {
+          levelMap[item.id] = item.mpid
+        }
+        return (
+          <Menu.SubMenu
+            key={item.id}
+            title={<span>
+              {item.imgUrl && <Icon type={item.imgUrl} />}
+              {(!siderFoldN || !menuTree.includes(item)) && item.characterization}
+            </span>}
+          >
+            {getMenus(item.children, siderFoldN)}
+          </Menu.SubMenu>
+        )
+      }
+      if(item.id==726){
+        let _b = srceenUrl+'/screen/html/index.html';
+        return (
+          <Menu.Item key={item.id}>
+            <a href={_b} target='_blank'>
+              {item.imgUrl && <Icon type={item.imgUrl} />}
+              {(!siderFoldN || !menuTree.includes(item)) && item.characterization}
+            </a>
+          </Menu.Item>
+        )
+      }else{
+        return (
+          <Menu.Item key={item.id}>
+            <a onClick={toLinks.bind(this,item.route||'#')}>
+              {item.imgUrl && <Icon type={item.imgUrl} />}
+              {(!siderFoldN || !menuTree.includes(item)) && item.characterization}
+            </a>
+          </Menu.Item>
+        )
+      }
+      
+    })
+  }
+
+
+  const toLinks = (rote)=>{
+    //清楚缓存
+    localStorage.removeItem('dotSearchs')
+    localStorage.removeItem('orgSearchs')
+    dispatch(routerRedux.push({
+			pathname: rote,
+		}))
+  }
+  
+  const menuItems = getMenus(menuTree, siderFold)
+
+  // 保持选中
+  const getAncestorKeys = (key) => {
+    let map = {}
+    const getParent = (index) => {
+      const result = [String(levelMap[index])]
+      if (levelMap[result[0]]) {
+        result.unshift(getParent(result[0])[0])
+      }
+      return result
+    }
+    for (let index in levelMap) {
+      if ({}.hasOwnProperty.call(levelMap, index)) {
+        map[index] = getParent(index)
+      }
+    }
+    return map[key] || []
+  }
+
+  const onOpenChange = (openKeys) => {
+    const latestOpenKey = openKeys.find(key => !navOpenKeys.includes(key))
+    const latestCloseKey = navOpenKeys.find(key => !openKeys.includes(key))
+    let nextOpenKeys = []
+    if (latestOpenKey) {
+      nextOpenKeys = getAncestorKeys(latestOpenKey).concat(latestOpenKey)
+    }
+    if (latestCloseKey) {
+      nextOpenKeys = getAncestorKeys(latestCloseKey)
+    }
+    changeOpenKeys(nextOpenKeys)
+  }
+
+  let menuProps = !siderFold ? {
+    onOpenChange,
+    openKeys: navOpenKeys,
+  } : {}
+
+
+  // 寻找选中路由
+  let currentMenu
+  let defaultSelectedKeys
+  for (let item of menu) {
+    if (item.route && pathToRegexp(item.route).exec(location.pathname)) {
+      currentMenu = item
+      break
+    }
+  }
+  const getPathArray = (array, current, pid, id) => {
+    let result = [String(current[id])]
+    const getPath = (item) => {
+      if (item && item[pid]) {
+        result.unshift(String(item[pid]))
+        getPath(queryArray(array, item[pid], id))
+      }
+    }
+    getPath(current)
+    return result
+  }
+  if (currentMenu) {
+    defaultSelectedKeys = getPathArray(menu, currentMenu, 'mpid', 'id')
+  }else{
+	//指向父级
+  const fa = location.pathname
+	const num = fa.lastIndexOf('/')
+	const fa2 = fa.substring(0,num)
+	for (let item of menu) {
+		if (item.route && pathToRegexp(item.route).exec(fa2)) {
+		  currentMenu = item
+		  break
+		}
+	}
+	if(currentMenu){
+		defaultSelectedKeys = getPathArray(menu, currentMenu, 'mpid', 'id')
+	}
+  }
+
+  if (!defaultSelectedKeys) {
+    defaultSelectedKeys = ['1']
+  }
+
+  return (
+    <Menu
+      {...menuProps}
+      mode={siderFold ? 'vertical' : 'inline'}
+      theme='dark'
+      selectedKeys={defaultSelectedKeys}
+    >
+      {menuItems}
+    </Menu>
+  )
+}
+
+export default Menus

@@ -1,0 +1,86 @@
+/* 设置全局样式 */
+page{
+	height: 100%;
+	font-size: 28rpx;
+	line-height: 1.8;
+	background: #FFFFFF;
+	-webkit-text-size-adjust:none;
+}
+
+/*图片默认100%宽度 防止图片闪一下*/
+image{  width: 100%; will-change: transform;}
+/* scroll-view */
+.scroll-row{ width: 100%;white-space: nowrap; }
+.scroll-row-item{ display: inline-block; }
+/* tabbar 底部预留间距 */
+.page-padding-bottom{
+	padding-bottom: var(--window-bottom);
+}
+.page-loading{
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #fff;
+	z-index: 9;
+}
+/* 隐藏滚动条 */
+/* ::-webkit-scrollbar { width: 0 !important } */
+/* 文本溢出隐藏 */
+.w-ellipsis {overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
+.w-ellipsis-2{
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+}
+/* 边线 */
+.border-top-line,.border-bottom-line,.border-left-line,.border-right-line{
+	position: relative;
+}
+.border-top-line:before{
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	height: 1px;
+	background: #eee;
+	transform: scaleY(0.5);
+}
+.border-bottom-line:after{
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 1px;
+	background: #eee;
+	transform: scaleY(0.5);
+}
+.border-left-line:before{
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 1px;
+	background: #eee;
+	transform: scaleX(0.5);
+}
+.border-right-line:after{
+	content: '';
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 1px;
+	background: #eee;
+	transform: scaleX(0.5);
+}
